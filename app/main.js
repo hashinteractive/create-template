@@ -3,10 +3,9 @@ define(function (require) {
     // with a relative require call,
     // like:
     var messages = require('./messages');
+    var _ = require('lodash')
+    var $ = require('jquery')
+    var { exampleTpl } = require('tpl/templates')
 
-    // Load library/vendor modules using
-    // full IDs, like:
-    var print = require('print');
-
-    print(messages.getHello());
+    $('body').html(exampleTpl())
 });

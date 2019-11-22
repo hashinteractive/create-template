@@ -6,7 +6,11 @@
 requirejs.config({
     baseUrl: 'lib',
     paths: {
-        app: '../app'
+        lodash: 'lodash.min',
+        jquery: 'jquery.min',
+        text: 'plugins/text',
+        tpl: '../templates',
+        app: '../app',
     }
 });
 

@@ -1,0 +1,7 @@
+#kickout{
+  transform: translateX(-275px);
+  transition: transform 500ms;
+}
+#kickout.active{
+  transform: translateX(0);
+}

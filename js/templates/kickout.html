@@ -3,7 +3,7 @@
     <i class="fas fa-caret-right"></i>
   </div>
   <div class="flex flex-col">
-    <div class="w-full">
+    <div class="w-full mb-12">
       <form class="w-full">
           <div class="flex items-center">
             <input class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded rounded-tr-none rounded-br-none py-2 px-4 block w-full appearance-none leading-normal" type="email" placeholder="Folder Name">
@@ -12,6 +12,11 @@
             </button>
           </div>
       </form>
+    </div>
+    <div class="w-full">
+      <% for(folder of folders){ %>
+        <%= folderSidebarTpl(folder) %>
+      <% } %> 
     </div>
   </div> 
 </div>

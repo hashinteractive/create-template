@@ -5,11 +5,21 @@ define(function (require) {
   const $ = require('jquery')
   const store = require('app/store')
   let { route, router } = require('silkrouter')
-  let { kickoutTpl } = require('tpl/templates')
+  let { kickoutTpl, folderSidebarTpl } = require('tpl/templates')
   let routes = require('app/routes')
 
+  // class App{
+  //   constructor(store){
+  //     this.store = store
+  //   },
+  //   initialize: function(){
+
+  //   }
+  // }
+  //get folders, if not set in localStorage returns null so set to empty array
+  let folders = store.getters.getItem('folders') || []
   //replace <Kickout></Kickout> with kickoutTpl
-  $('Kickout').replaceWith(kickoutTpl())
+  $('Kickout').html(kickoutTpl({ folderSidebarTpl, folders }))
 
   $('#kickout').on('click', '[data-toggle]', function(e){
     e.delegateTarget.classList.toggle('active')

@@ -1,15 +1,17 @@
 define([
   'lodash',
-  'text!tpl/page.html',
-  'text!tpl/link.html',
+  'text!tpl/modal.html',
   'text!tpl/kickout.html',
-  'text!tpl/folderSidebar.html'
-], function( _, page, link, kickout, folderSidebar ){
+  'text!tpl/folderSidebar.html',
+  'text!tpl/images.html',
+  'text!tpl/image.html'
+], function( _, modal, kickout, folderSidebar, images, image ){
 
  return {
-    pageTpl: _.template(page),
-    linkTpl: _.template(link),
+    modalTpl: _.template(modal),
     kickoutTpl: _.template(kickout),
-    folderSidebarTpl: _.template(folderSidebar)
+    folderSidebarTpl: _.template(folderSidebar),
+    imagesTpl: _.template(images),
+    imageTpl: _.template(image)
   }
 })

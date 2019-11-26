@@ -14,7 +14,7 @@ define(['lodash'], function(_){
           //create unique id
           let id = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'.replace(/[x]/g, () => ((Math.random() * 16) | 0).toString(16))
           //create folder object
-          let folder = { id, name: value }
+          let folder = { id, name: value, images: [] }
           //get parsed folders array
           let folders = this.getters.getItem('folders')
           //push folder onto folders

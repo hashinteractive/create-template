@@ -1,7 +1,19 @@
+#modal{
+  background: rgba(0,0,0,0.85); 
+}
 #kickout{
   transform: translateX(-275px);
   transition: transform 500ms;
 }
 #kickout.active{
   transform: translateX(0);
+}
+
+#images .image .relative .overlay{
+  background: rgba(0,0,0,0.85); 
+  transition: transform 500ms;
+  transform: translateY(-200px);
+}
+#images .image .relative:hover .overlay{
+  transform: translateY(0);
 }

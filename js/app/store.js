@@ -23,6 +23,22 @@ define(['lodash'], function(_){
           this.actions.setItem('folders', folders)
           //return newly created folder
           return folder
+        },
+        saveImageToFolder: (folderId, imageId) => {
+          let folders = this.getters.getItem('folders')
+          let index = folders.findIndex(f => f.id == folderId)
+          let folder = folders[index]
+          //make sure image isn't in the folder already
+          if(folder.images.find(image => image == imageId)) return
+
+          //proceed to add
+          folder.images.push(imageId)
+
+          //splice folders array replacing folder with new folder that has image saved
+          folders.splice(index, 1, folder)
+          this.actions.setItem('folders', folders)
+          //return updated folder
+          return folder
         }
       };
       this.getters = {

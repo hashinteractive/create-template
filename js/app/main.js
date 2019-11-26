@@ -48,11 +48,24 @@ define(function (require) {
         }
       })
     }
-    bindSaveToFolder(){
+    bindSaveImageToFolder(){
+      $('#folderList .folder', this.$app).on('click', e => {
+        let { folder, image } = e.delegateTarget.dataset
+        let updated = this.store.actions.saveImageToFolder(folder, image)
+        console.log(updated)
+        this.renderModal(false)
+      })
+    }
+    bindSaveToFolderIcon(){
       $('.save', this.$app).on('click', e => {
         e.preventDefault()
-        console.log(e)
-        let id = e.delegateTarget.dataset['id']
+        let imageId = e.delegateTarget.dataset['id']
+        let folders = this.store.getters.getItem('folders') || []
+        let { folderListTpl, folderListItemTpl } = this.templates
+
+        let content = folderListTpl({ imageId, folders, folderListItemTpl })
+        this.renderModal(true, content)
+        this.bindSaveImageToFolder()
       })
     }
     renderModal(active = false, content = ""){
@@ -62,9 +75,9 @@ define(function (require) {
     renderSidebar(status = null){
       //get folders, if not set in localStorage returns null so set to empty array
       let folders = this.store.getters.getItem('folders') || []
-      let { kickoutTpl, folderSidebarTpl } = this.templates 
+      let { kickoutTpl, folderSidebarItemTpl } = this.templates 
       //replace <Kickout></Kickout> with kickoutTpl
-      $('Kickout', this.$app).html(kickoutTpl({ status, folderSidebarTpl, folders }))
+      $('Kickout', this.$app).html(kickoutTpl({ status, folderSidebarItemTpl, folders }))
       //bind toggle event to kickout
       this.bindToggleKickout()
       //bind/re-bind addFolder event
@@ -73,7 +86,7 @@ define(function (require) {
     renderImages(images = []){
       let { imagesTpl, imageTpl } = this.templates
       $('Images', this.$app).html(imagesTpl({ images, imageTpl }))
-      this.bindSaveToFolder()
+      this.bindSaveToFolderIcon()
     }
     initialize(){
       this.renderModal()

@@ -44,6 +44,9 @@ define(['lodash'], function(_){
       this.getters = {
         getItem: (key) => {
           return JSON.parse(window.localStorage.getItem(key))
+        },
+        getFolder: (id) => {
+          return this.getters.getItem('folders').find(f => f.id === id)
         }
       }
     }

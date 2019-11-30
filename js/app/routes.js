@@ -1,4 +1,4 @@
-define(['tpl/templates'], function({ homeTpl }){
+define(['tpl/templates'], function({ homeTpl, folderTpl }){
   
   return [{
     name: 'home',
@@ -8,5 +8,12 @@ define(['tpl/templates'], function({ homeTpl }){
       app.bindSearch()
       app.renderImages()
     } 
+  }, {
+    name: 'folder',
+    path: '#/folder/:id',
+    template: folderTpl,
+    callback: function(){
+
+    }
   }]
 })

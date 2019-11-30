@@ -18,10 +18,34 @@ define(function (require) {
     }
     bindRoutes(){
       this.routes.forEach(({ name, path, template, callback }) => {
-        route(path, (e) => {
-          $('#main', this.$app).html(template({ name }))
-          callback(this)
-        })
+        if(name === 'folder'){
+          route(path, async (e) => {
+            const { id } = e.params
+            let folder = this.store.getters.getFolder(id),
+                { images } = folder,
+                { folderImageTpl } = this.templates
+
+            //use a promise all to wait for all of the returned image objects
+            //from api.giphy.com/v1/gifs/${id}
+            let giffys = await Promise.all(images.map(id => {
+              return new Promise(async (resolve, reject) => {
+                 try{
+                   let { data } = await $.get(`http://api.giphy.com/v1/gifs/${id}?api_key=${this._apiKey}`)
+                   resolve(data)
+                 }catch(e){
+                   reject(e)
+                 }
+              })
+            }))
+            $('#main', this.$app).html(template({ folder, giffys, folderImageTpl }))
+            callback(this)
+          })
+        }else{
+          route(path, (e) => {
+            $('#main', this.$app).html(template({ name }))
+            callback(this)
+          })
+        }
       })
     }
     setRoute(route){
@@ -102,10 +126,12 @@ define(function (require) {
       this.bindSaveToFolderIcon()
     }
     initialize(){
+      //render the modal on the page where <Modal></Modal>
       this.renderModal()
+      //render the sidebar on the page where <Kickout></Kickout>
       this.renderSidebar()
+      //bind the routes. Routes execute callbacks when the router.set(route) event is fired
       this.bindRoutes()
-      this.setRoute('#/') 
     }
   }
 
@@ -115,5 +141,10 @@ define(function (require) {
   $(document).ready(() => {
     //initialize app
     app.initialize()
+    //set the initial route to 'home'
+    if(!window.location.hash)
+      app.setRoute('#/')
+
+    window.App = app
   })
 });

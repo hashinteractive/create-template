@@ -1,12 +1,12 @@
-define(['tpl/templates'], function({ pageTpl }){
+define(['tpl/templates'], function({ homeTpl }){
   
   return [{
-    name: 'about',
-    path: '#/about',
-    template: pageTpl 
-  }, {
-    name: 'example',
-    path: '#/example',
-    template: pageTpl 
+    name: 'home',
+    path: '#/',
+    template: homeTpl,
+    callback: function(app){
+      app.bindSearch()
+      app.renderImages()
+    } 
   }]
 })

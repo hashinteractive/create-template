@@ -4,16 +4,28 @@ define(function (require) {
   // like:
   const $ = require('jquery')
   const store = require('app/store')
-  //let { route, router } = require('silkrouter')
+  const { route, router } = require('silkrouter')
   const templates  = require('tpl/templates')
-  let routes = require('app/routes')
+  const routes = require('app/routes')
 
   class App{
-    constructor($app, store, templates){
+    constructor($app, store, templates, routes){
       this.$app = $app
       this.store = store
       this.templates = templates
+      this.routes = routes
       this._apiKey = 'CkGhT7c5yU8gHcV5QROBGrvA3TFuAXGq'
+    }
+    bindRoutes(){
+      this.routes.forEach(({ name, path, template, callback }) => {
+        route(path, (e) => {
+          $('#main', this.$app).html(template({ name }))
+          callback(this)
+        })
+      })
+    }
+    setRoute(route){
+      router.set(route)
     }
     bindToggleKickout(){
       //bind the toggle event to the kickout
@@ -32,7 +44,7 @@ define(function (require) {
         if(!folderName){ alert("Folder name is required"); return; }
 
         this.store.actions.addFolder(folderName)
-        this.renderSidebar('active')
+        this.renderSidebar()
       })
     }
     bindSearch(){
@@ -52,7 +64,6 @@ define(function (require) {
       $('#folderList .folder', this.$app).on('click', e => {
         let { folder, image } = e.delegateTarget.dataset
         let updated = this.store.actions.saveImageToFolder(folder, image)
-        console.log(updated)
         this.renderModal(false)
       })
     }
@@ -72,10 +83,12 @@ define(function (require) {
       let { modalTpl } = this.templates
       $('Modal', this.$app).html(modalTpl({ active, content }))
     }
-    renderSidebar(status = null){
+    renderSidebar(){
       //get folders, if not set in localStorage returns null so set to empty array
       let folders = this.store.getters.getItem('folders') || []
       let { kickoutTpl, folderSidebarItemTpl } = this.templates 
+      //check if #kickout has class active
+      let status = $('#kickout').hasClass('active') ? true : false
       //replace <Kickout></Kickout> with kickoutTpl
       $('Kickout', this.$app).html(kickoutTpl({ status, folderSidebarItemTpl, folders }))
       //bind toggle event to kickout
@@ -91,13 +104,13 @@ define(function (require) {
     initialize(){
       this.renderModal()
       this.renderSidebar()
-      this.bindSearch()
-      this.renderImages()
+      this.bindRoutes()
+      this.setRoute('#/') 
     }
   }
 
   //create an instance of App and pass in 
-  const app = new App($('#app'), store, templates)
+  const app = new App($('#app'), store, templates, routes)
 
   $(document).ready(() => {
     //initialize app

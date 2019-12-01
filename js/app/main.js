@@ -64,7 +64,7 @@ define(function (require) {
     bindAddFolder(){
       $('#kickout', this.$app).on('click', '#add', (e) => {
         let $kickout = $(e.delegateTarget)
-        let folderName = $('input[name="folder"]', $kickout).val()
+        let folderName = $('input[name="folder"]', $kickout).val().toLowerCase()
         if(!folderName){ alert("Folder name is required"); return; }
 
         this.store.actions.addFolder(folderName)
@@ -88,6 +88,7 @@ define(function (require) {
       $('#folderList .folder', this.$app).on('click', e => {
         let { folder, image } = e.delegateTarget.dataset
         let updated = this.store.actions.saveImageToFolder(folder, image)
+        this.renderSidebar()
         this.renderModal(false)
       })
     }
@@ -113,6 +114,7 @@ define(function (require) {
         this.store.actions.deleteImageFromFolder(folderId, imageId)
         //delete the .image div from the folderTpl 
         $(image).remove()
+        this.renderSidebar()
       })
     }
     bindDeleteFolder(){
@@ -120,9 +122,11 @@ define(function (require) {
         let id = e.delegateTarget.dataset['id'],
             name = e.delegateTarget.dataset['name'] 
 
-        if(!confirm(`Are you sure you want to delete folder: ${name}`)) return
+        if(!confirm(`Are you sure you want to delete folder: ${name}? This will delete the folder and all saved images in this folder.`)) return
 
-        console.log(id)
+        let deleted = this.store.actions.deleteFolder(id)
+        this.renderSidebar()
+        this.setRoute('#/')
       })
     }
     renderModal(active = false, content = ""){

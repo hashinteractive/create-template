@@ -57,6 +57,17 @@ define(['lodash'], function(_){
           this.actions.setItem('folders', folders)
           //return updated folder
           return folder
+        },
+        deleteFolder: (id) => {
+          let folders = this.getters.getItem('folders'),
+              index = folders.findIndex(f => f.id === id)
+          
+          //make sure folder is in folders
+          if(index === -1) return
+
+          let deleted = folders.splice(index, 1)
+          this.actions.setItem('folders', folders)
+          return deleted
         }
       };
       this.getters = {

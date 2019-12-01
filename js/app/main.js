@@ -103,6 +103,28 @@ define(function (require) {
         this.bindSaveImageToFolder()
       })
     }
+    bindDeleteFromFolderIcon(){
+      $('.image', this.$app).on('click', '.delete', e => {
+        e.preventDefault()
+        let image = e.delegateTarget,
+            imageId = image.dataset['id'],
+            folderId = image.dataset['folder']
+        //delete the image from the folder
+        this.store.actions.deleteImageFromFolder(folderId, imageId)
+        //delete the .image div from the folderTpl 
+        $(image).remove()
+      })
+    }
+    bindDeleteFolder(){
+      $('.folder', this.$app).on('click', '.remove', e => {
+        let id = e.delegateTarget.dataset['id'],
+            name = e.delegateTarget.dataset['name'] 
+
+        if(!confirm(`Are you sure you want to delete folder: ${name}`)) return
+
+        console.log(id)
+      })
+    }
     renderModal(active = false, content = ""){
       let { modalTpl } = this.templates
       $('Modal', this.$app).html(modalTpl({ active, content }))

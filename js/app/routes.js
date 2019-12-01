@@ -12,8 +12,9 @@ define(['tpl/templates'], function({ homeTpl, folderTpl }){
     name: 'folder',
     path: '#/folder/:id',
     template: folderTpl,
-    callback: function(){
-
+    callback: function(app){
+      app.bindDeleteFromFolderIcon()
+      app.bindDeleteFolder()
     }
   }]
 })

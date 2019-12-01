@@ -39,6 +39,24 @@ define(['lodash'], function(_){
           this.actions.setItem('folders', folders)
           //return updated folder
           return folder
+        },
+        deleteImageFromFolder: (folderId, imageId) => {
+          let folders = this.getters.getItem('folders'),
+              index = folders.findIndex(f => f.id == folderId),
+              folder = folders[index]
+
+          //make sure the image is in the folder
+          //using findIndex to splice image from folder later
+          let imageIndex = folder.images.findIndex(i => i == imageId)
+          if(imageIndex === -1) return
+         
+          //splice the image out of folder.images
+          folder.images.splice(imageIndex, 1)
+          //splice folders array replacing folder with new folder that has image saved
+          folders.splice(index, 1, folder)
+          this.actions.setItem('folders', folders)
+          //return updated folder
+          return folder
         }
       };
       this.getters = {

@@ -94,6 +94,7 @@ define(function (require) {
         if(!e.target.value) return
 
         this._query = encodeURI(e.target.value)
+        this._offset = 0
         this.getImagesApi()
       })
     }

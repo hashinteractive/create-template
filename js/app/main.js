@@ -14,7 +14,9 @@ define(function (require) {
       this.store = store
       this.templates = templates
       this.routes = routes
-      this._apiKey = 'CkGhT7c5yU8gHcV5QROBGrvA3TFuAXGq'
+      this._apiKey = 'CkGhT7c5yU8gHcV5QROBGrvA3TFuAXGq',
+      this._query = ''
+      this._offset = 0
     }
     bindRoutes(){
       this.routes.forEach(({ name, path, template, callback }) => {
@@ -51,6 +53,14 @@ define(function (require) {
     setRoute(route){
       router.set(route)
     }
+    async getImagesApi(){
+       try{
+          let { data } = await $.get(`//api.giphy.com/v1/gifs/search?q=${this._query}&offset=${this._offset}&api_key=${this._apiKey}&limit=12`);
+          this.renderImages(data)
+        }catch(e){
+          console.log("Error: ", e)
+        }
+    }
     bindToggleKickout(){
       //bind the toggle event to the kickout
       $('#kickout', this.$app).on('click', '[data-toggle]', function(e){
@@ -71,17 +81,20 @@ define(function (require) {
         this.renderSidebar()
       })
     }
+    bindPaginate(){
+      $('.paginate', this.$app).on('click', 'a', e => {
+        e.preventDefault()
+        let offset = e.target.dataset['offset']
+        this._offset = offset
+        this.getImagesApi()
+      })
+    }
     bindSearch(){
-      $('input[name="search"]', this.$app).on('blur', async (e) => {
+      $('input[name="search"]', this.$app).on('blur', (e) => {
         if(!e.target.value) return
 
-        let query = encodeURI(e.target.value)
-        try{
-          let { data } = await $.get(`//api.giphy.com/v1/gifs/search?q=${query}&api_key=${this._apiKey}&limit=12`);
-          this.renderImages(data)
-        }catch(e){
-          console.log("Error: ", e)
-        }
+        this._query = encodeURI(e.target.value)
+        this.getImagesApi()
       })
     }
     bindSaveImageToFolder(){
@@ -158,8 +171,9 @@ define(function (require) {
     }
     renderImages(images = []){
       let { imagesTpl, imageTpl } = this.templates
-      $('Images', this.$app).html(imagesTpl({ images, imageTpl }))
+      $('Images', this.$app).html(imagesTpl({ offset: this._offset, images, imageTpl }))
       this.bindSaveToFolderIcon()
+      this.bindPaginate()
     }
     initialize(){
       //render the modal on the page where <Modal></Modal>

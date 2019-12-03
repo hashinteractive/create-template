@@ -1,8 +1,15 @@
-<div id="images" class="flex flex-wrap -mx-4">
+<div id="images">
   <% if(images.length){ %>
-     <% for(image of images){ %>
-       <%= imageTpl(image) %> 
-     <% } %>
+    <div class="flex flex-wrap -mx-4">
+      <% for(image of images){ %>
+        <%= imageTpl(image) %> 
+      <% } %>
+     </div>
+     <div class="paginate mt-i8 flex justify-center">
+       <% for(let n = 1; n < 10; n++){ %>
+        <a href="#" data-offset="<%= (n - 1) * 12 %>" class="bg-teal-400 text-white rounded-full ml-2 py-1 px-3 <%= (n - 1) * 12 == offset && 'active' %>"><%= n %></a>
+       <% } %>
+     </div>
   <% } else{ %>
     <div class="w-full text-center">
       <h5 class="text-gray-500">Use the Search Bar to Search Images</h5>

@@ -17,3 +17,8 @@
 #images .image .relative:hover .overlay{
   transform: translateY(0);
 }
+#images .paginate a.active{
+  background-color: #ffffff;
+  border: 1px solid #4fd1c5;
+  color: #4fd1c5;
+}

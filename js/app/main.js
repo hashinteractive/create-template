@@ -30,7 +30,7 @@ define(function (require) {
             let giffys = await Promise.all(images.map(id => {
               return new Promise(async (resolve, reject) => {
                  try{
-                   let { data } = await $.get(`http://api.giphy.com/v1/gifs/${id}?api_key=${this._apiKey}`)
+                   let { data } = await $.get(`//api.giphy.com/v1/gifs/${id}?api_key=${this._apiKey}`)
                    resolve(data)
                  }catch(e){
                    reject(e)
@@ -77,7 +77,7 @@ define(function (require) {
 
         let query = encodeURI(e.target.value)
         try{
-          let { data } = await $.get(`http://api.giphy.com/v1/gifs/search?q=${query}&api_key=${this._apiKey}&limit=12`);
+          let { data } = await $.get(`//api.giphy.com/v1/gifs/search?q=${query}&api_key=${this._apiKey}&limit=12`);
           this.renderImages(data)
         }catch(e){
           console.log("Error: ", e)

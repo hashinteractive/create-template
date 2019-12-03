@@ -117,6 +117,15 @@ define(function (require) {
         this.renderSidebar()
       })
     }
+    bindShareIcon(){
+      $('.image', this.$app).on('click', '.share', e => {
+        e.preventDefault()
+        let image = e.delegateTarget,
+            bitly = image.dataset['bitly'],
+            content = `<div class="p-2 bg-gray-200 rounded">${bitly}</div>`
+        this.renderModal(true, content)
+      })
+    }
     bindDeleteFolder(){
       $('.folder', this.$app).on('click', '.remove', e => {
         let id = e.delegateTarget.dataset['id'],
@@ -132,6 +141,7 @@ define(function (require) {
     renderModal(active = false, content = ""){
       let { modalTpl } = this.templates
       $('Modal', this.$app).html(modalTpl({ active, content }))
+      $('#modal', this.$app).on('click', '.close', e => { this.renderModal(false) })
     }
     renderSidebar(){
       //get folders, if not set in localStorage returns null so set to empty array

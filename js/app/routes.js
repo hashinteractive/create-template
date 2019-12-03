@@ -15,6 +15,7 @@ define(['tpl/templates'], function({ homeTpl, folderTpl }){
     callback: function(app){
       app.bindDeleteFromFolderIcon()
       app.bindDeleteFolder()
+      app.bindShareIcon()
     }
   }]
 })

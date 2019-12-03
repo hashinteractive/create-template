@@ -1,5 +1,8 @@
 <div id="modal" class="fixed flex items-center justify-center inset-0 z-50 <%= !active && 'hidden' %>">
-  <div class="w-full max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+  <div class="relative w-full max-w-lg bg-white shadow-md rounded px-8 py-6 mb-4">
     <%= content %>
+    <div class="close absolute top-0 right-0 -mt-1 -mr-1 cursor-pointer">
+      <i class="fa fa-times-circle fa-lg"></i>
+    </div>
   </div>
 </div>
